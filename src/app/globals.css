@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground: #1a1a1a;
+  --background: #faf9f7;
+  --accent: #2d5a3d;
+  --accent-muted: #4a7c59;
+  --card: #ffffff;
+  --border: #e5e2dd;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-noto-sans-kr), system-ui, sans-serif;
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 rounded-lg font-medium bg-[var(--accent)] text-white hover:bg-[var(--accent-muted)] transition;
+  }
+  .btn-secondary {
+    @apply px-4 py-2 rounded-lg font-medium border border-[var(--border)] bg-[var(--card)] hover:bg-gray-50 transition;
+  }
+  .card {
+    @apply bg-[var(--card)] border border-[var(--border)] rounded-xl shadow-sm p-6;
+  }
+  .prose-narrative {
+    @apply text-gray-800 leading-relaxed whitespace-pre-line;
+  }
+}
