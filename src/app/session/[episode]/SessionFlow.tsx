@@ -189,15 +189,25 @@ export default function SessionFlow({
           <p className="text-gray-600 mt-2">
             응답은 브라우저에 저장되었습니다. (연구용 로그: localStorage reads_logs)
           </p>
-          <div className="flex gap-3 justify-center mt-6">
-            <Link href="/" className="btn-secondary">
-              홈으로
-            </Link>
+          {episodeId === "4" && (
+            <p className="text-gray-700 mt-4 font-medium">
+              다음으로, 본격적인 읽기 활동에 들어가기 전에 <strong>배경지식 검사</strong>를 진행합니다.
+            </p>
+          )}
+          <div className="flex flex-wrap gap-3 justify-center mt-6">
+            {episodeId === "4" && (
+              <Link href="/background-knowledge" className="btn-primary">
+                배경지식 검사 하기
+              </Link>
+            )}
             {nextEpisode && (
               <Link href={`/session/${nextEpisode}`} className="btn-primary">
                 에피소드 {nextEpisode} 진행
               </Link>
             )}
+            <Link href="/" className="btn-secondary">
+              홈으로
+            </Link>
           </div>
         </section>
       )}
