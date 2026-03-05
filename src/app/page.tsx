@@ -18,8 +18,7 @@ export default function HomePage() {
           Reading for Evidence And Disciplinary Science
         </p>
         <p className="text-gray-700 leading-relaxed">
-          바다가 가까운 마을을 배경으로 한 네 편의 단편 소설을 읽고,
-          관찰과 패턴, 원인 탐색, 먹이사슬과 독소를 생각해 보며 과학적 소양을 키워 보세요.
+          바다가 가까운 마을을 배경으로 한 네 편의 단편 소설을 읽고, 과학적 역량을 길러보세요!
         </p>
         <div className="pt-4 flex flex-col gap-3">
           <Link href="/session/1" className="btn-primary inline-block">
