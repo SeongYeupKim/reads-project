@@ -51,10 +51,21 @@ git push -u origin main
 
 현재 버전은 환경 변수 없이 동작합니다. 추후 백엔드·로그 수집 API를 쓰면 Vercel 프로젝트 **Settings → Environment Variables**에서 설정하면 됩니다.
 
-## 5. 404 NOT_FOUND가 날 때
+## 5. 404 NOT_FOUND가 날 때 — Vercel 설정 체크리스트
 
-- **Root Directory**: 푸시한 저장소가 **앱 폴더만** 포함한 경우(예: `reads-project`에 package.json이 루트에 있음) → **비워 두기**.  
-  저장소 루트가 상위 폴더이고 앱이 `reads` 안에 있으면 → **Root Directory**에 `reads` 입력.
-- **빌드 로그**: Vercel 대시보드 → 해당 프로젝트 → **Deployments** → 최근 배포 클릭 → **Building** 로그에서 실패 여부 확인. 빌드 실패 시 404가 날 수 있음.
-- **접속 주소**: 배포 후 나온 URL(예: `https://reads-xxx.vercel.app`)의 **루트(`/`)** 로 접속. 다른 경로는 앱에 없으면 404.
-- **vercel.json**: 프로젝트에 `vercel.json`(framework: nextjs)이 있으면 Next.js로 인식하기 쉬움. 커밋 후 다시 Deploy.
+1. **Settings → General**
+   - **Root Directory**: 이 저장소(`reads-project`)는 **앱이 루트**이므로 **비워 두기**.  
+     (다른 저장소에서 `reads` 폴더만 앱인 경우에만 `reads` 입력.)
+
+2. **Settings → Build & Development**
+   - **Framework Preset**: **Next.js** 로 되어 있는지 확인.
+   - **Build Command**: 비워 두거나 `npm run build`. (vercel.json에 있으면 그대로 사용.)
+   - **Output Directory**: **반드시 비우기.** Next.js는 Vercel이 자동 처리함. `out` 또는 `.next` 등으로 두면 404 발생할 수 있음.
+   - **Install Command**: 비워 두거나 `npm install`.
+
+3. **Deployments**
+   - 최근 배포 → **Building** 탭에서 빌드가 **성공(Finished)** 인지 확인. 실패하면 404가 날 수 있음.
+   - **Runtime Logs** 에서 에러가 없는지 확인.
+
+4. **접속**
+   - 배포 URL은 **루트**로: `https://[프로젝트].vercel.app/` (끝에 `/` 없어도 됨). 존재하지 않는 경로(예: `/foo`)는 404.
