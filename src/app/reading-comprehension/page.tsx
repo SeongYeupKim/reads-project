@@ -51,9 +51,14 @@ export default function ReadingComprehensionPage() {
           <p className="text-gray-600 mt-2">
             응답이 저장되었습니다. (localStorage: reads_reading_comprehension)
           </p>
-          <Link href="/" className="btn-primary mt-6 inline-block">
-            홈으로
-          </Link>
+          <div className="flex flex-col gap-3 mt-6 items-center">
+            <Link href="/scenario" className="btn-primary">
+              다음: 시나리오 문항
+            </Link>
+            <Link href="/" className="btn-secondary">
+              홈으로
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -72,6 +77,14 @@ export default function ReadingComprehensionPage() {
 
       <section className="grid grid-cols-1 lg:grid-cols-10 gap-4 lg:h-[75vh] lg:overflow-hidden">
         <div className="lg:col-span-7 card overflow-hidden flex flex-col min-h-0">
+          <div className="relative w-full h-20 rounded-lg overflow-hidden bg-gradient-to-br from-slate-100 to-teal-50 mb-3 shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/img/episode-ocean.svg"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover opacity-80"
+            />
+          </div>
           <h2 className="text-sm font-medium text-gray-500 mb-2 shrink-0">
             {current.title}
           </h2>

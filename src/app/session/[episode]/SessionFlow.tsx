@@ -97,7 +97,15 @@ export default function SessionFlow({
 
       {/* Narrative only */}
       {step === "narrative" && (
-        <section className="card max-w-2xl">
+        <section className="card max-w-2xl overflow-hidden">
+          <div className="relative w-full h-28 rounded-lg overflow-hidden bg-gradient-to-br from-emerald-50 to-teal-50 mb-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/img/episode-ocean.svg"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
           <h2 className="text-sm font-medium text-gray-500 mb-3">본문</h2>
           <div
             className="prose-narrative"

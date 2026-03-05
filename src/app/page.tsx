@@ -4,6 +4,13 @@ export default function HomePage() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-gradient-to-b from-emerald-50/80 to-white">
       <div className="max-w-lg w-full text-center space-y-6">
+        <div className="relative w-full aspect-[2/1] max-h-48 rounded-xl overflow-hidden bg-gradient-to-br from-emerald-100 to-teal-100 shadow-sm">
+          <img
+            src="/img/hero-pier.svg"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </div>
         <h1 className="text-3xl font-bold text-[var(--accent)] tracking-tight">
           READS
         </h1>
