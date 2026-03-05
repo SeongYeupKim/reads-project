@@ -44,13 +44,8 @@ export const comprehensionTexts: ComprehensionText[] = [
       {
         id: "rc1-2",
         textIndex: 1,
-        question: "유해 조류 번성은 무엇을 의미하는가?",
-        options: [
-          "해양 생물이 대량으로 죽는 현상",
-          "특정 미세조류가 해양 환경에서 급격하게 증가하는 현상",
-          "해수 온도가 급격히 상승하는 현상",
-          "해안 지역에서 어획량이 감소하는 현상",
-        ],
+        question: "기억상실성 조개류 중독의 주요 원인 물질로 언급된 것은 무엇인가?",
+        options: ["수은", "도모산", "플랑크톤 독소", "질산염"],
         correctIndex: 1,
       },
       {

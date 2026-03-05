@@ -33,12 +33,6 @@ export default function HomePage() {
         <p className="text-xs text-gray-400 pt-4">
           회기당 약 25–35분 · 총 4회기
         </p>
-        <Link
-          href="/survey"
-          className="text-sm text-gray-500 hover:underline mt-2 inline-block"
-        >
-          사전/사후 측정 (설문)
-        </Link>
       </div>
     </main>
   );

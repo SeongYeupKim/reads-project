@@ -83,34 +83,37 @@ export default function ReadingComprehensionPage() {
           <h2 className="text-sm font-medium text-gray-500 mb-2 shrink-0">
             독해 문항
           </h2>
-          <div className="flex-1 overflow-y-auto min-h-0 space-y-4 pr-1">
-            {current.items.map((item, idx) => (
-              <div key={item.id}>
-                <p className="font-medium text-gray-800 text-sm mb-2">
-                  {item.question}
-                </p>
-                <ul className="space-y-1.5">
-                  {item.options.map((opt, i) => (
-                    <li key={i}>
-                      <label className="flex items-start gap-2 cursor-pointer text-sm">
-                        <input
-                          type="radio"
-                          name={item.id}
-                          checked={answers[item.id] === i}
-                          onChange={() =>
-                            setAnswers((prev) => ({ ...prev, [item.id]: i }))
-                          }
-                          className="mt-0.5 shrink-0"
-                        />
-                        <span>
-                          {LABELS[i]}. {opt}
-                        </span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div className="flex-1 overflow-y-auto min-h-0 space-y-6 pr-1">
+            {current.items.map((item, idx) => {
+              const num = step * 4 + idx + 1;
+              return (
+                <div key={item.id} className="pb-5 border-b border-[var(--border)] last:border-0 last:pb-0">
+                  <p className="font-medium text-gray-800 text-sm mb-3">
+                    {num}. {item.question}
+                  </p>
+                  <ul className="space-y-2">
+                    {item.options.map((opt, i) => (
+                      <li key={i}>
+                        <label className="flex items-start gap-2 cursor-pointer text-sm">
+                          <input
+                            type="radio"
+                            name={item.id}
+                            checked={answers[item.id] === i}
+                            onChange={() =>
+                              setAnswers((prev) => ({ ...prev, [item.id]: i }))
+                            }
+                            className="mt-0.5 shrink-0"
+                          />
+                          <span>
+                            {LABELS[i]}. {opt}
+                          </span>
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
           </div>
           <button
             onClick={handleNext}
@@ -120,13 +123,6 @@ export default function ReadingComprehensionPage() {
           </button>
         </div>
       </section>
-
-      <Link
-        href="/"
-        className="block mt-4 text-sm text-gray-500 hover:underline"
-      >
-        ← 홈
-      </Link>
     </main>
   );
 }
