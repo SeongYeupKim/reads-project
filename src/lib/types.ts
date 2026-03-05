@@ -49,7 +49,7 @@ export interface AnchoringQuestion {
 
 export interface SelfExplanationPrompt {
   id: string;
-  goal: "cause_effect" | "evidence_reason";
+  goal: "situation" | "cause_effect" | "evidence_reason";
   text: string;
   keywords: string[];
   misconceptionPatterns: string[];

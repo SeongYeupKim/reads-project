@@ -105,6 +105,14 @@ export const episode3: EpisodeContent = {
   ],
   selfExplanation: [
     {
+      id: "ep3-q1-se",
+      goal: "situation",
+      text: "이 이야기에서 수민이 맞닥뜨린 상황은 무엇인가요?",
+      keywords: ["비슷한 증상(기억 흐려짐 등) 여러 환자", "연령 제각각", "바다 관련 직업 공통", "생선 종류·먹이 단계 공통점"],
+      misconceptionPatterns: ["환자 많다만", "원인 단정(이것 때문이다)"],
+      rubric: { "0": "없음/오류", "1": "부분(증상만 또는 직업만)", "2": "충분(증상+기록+생선·먹이 단계까지 상황 서술)" },
+    },
+    {
       id: "ep3-se1",
       goal: "cause_effect",
       text: "이 이야기에서 **수민이 무엇을 관찰했고**, **어떤 가설·가능성을 떠올렸는지**, 원인과 결과를 엮어서 자신의 말로 설명해 보세요.",

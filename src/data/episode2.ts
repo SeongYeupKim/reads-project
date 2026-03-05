@@ -106,6 +106,14 @@ export const episode2: EpisodeContent = {
   ],
   selfExplanation: [
     {
+      id: "ep2-q1-se",
+      goal: "situation",
+      text: "이 이야기에서 태수가 발견한 ‘이상한 것’은 무엇인가요?",
+      keywords: ["고등어가 남음", "평소와 다른 메뉴 구성", "같은 메뉴 두 번 주문", "손님 수는 비슷한데 패턴 변화"],
+      misconceptionPatterns: ["손님 적다만 말함", "고등어만 언급하고 두 번 주문·패턴 미언급"],
+      rubric: { "0": "없음/오류", "1": "부분(한 가지만)", "2": "충분(고등어 남음 + 두 번 주문 등 패턴 포함)" },
+    },
+    {
       id: "ep2-se1",
       goal: "cause_effect",
       text: "이 이야기에서 **태수가 무엇을 발견했고**, **어떤 생각을 하게 되었는지**, 원인과 결과를 엮어서 자신의 말로 설명해 보세요.",

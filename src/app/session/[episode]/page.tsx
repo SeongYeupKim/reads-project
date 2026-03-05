@@ -11,10 +11,7 @@ export default async function SessionPage({
   if (!episodes[episode]) notFound();
   const content = episodes[episode];
   const hasContent = Boolean(
-    content.anchoring.length > 0 &&
-      content.selfExplanation.length > 0 &&
-      content.miniLesson &&
-      content.quiz.length > 0
+    content.selfExplanation.length >= 3 && content.miniLesson
   );
 
   return (

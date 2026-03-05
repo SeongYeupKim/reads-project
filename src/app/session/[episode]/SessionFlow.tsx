@@ -4,22 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import type { EpisodeContent, ResponseLog } from "@/lib/types";
 
-type Step =
-  | "narrative"
-  | { anchoring: number }
-  | { se: number }
-  | "miniLesson"
-  | { quiz: number }
-  | "done";
-
-function stepKey(s: Step): string {
-  if (s === "narrative") return "narrative";
-  if (s === "miniLesson") return "miniLesson";
-  if (s === "done") return "done";
-  if ("anchoring" in s) return `anchoring-${s.anchoring}`;
-  if ("se" in s) return `se-${s.se}`;
-  return `quiz-${(s as { quiz: number }).quiz}`;
-}
+type Step = "narrative" | { se: number } | "miniLesson" | "done";
 
 export default function SessionFlow({
   episodeId,
@@ -36,7 +21,6 @@ export default function SessionFlow({
 }) {
   const [step, setStep] = useState<Step>("narrative");
   const [answers, setAnswers] = useState<Record<string, string>>({});
-  const [quizSelected, setQuizSelected] = useState<Record<number, number>>({});
   const [logs, setLogs] = useState<ResponseLog[]>([]);
 
   const logResponse = useCallback(
@@ -68,15 +52,7 @@ export default function SessionFlow({
 
   const goNext = useCallback(() => {
     if (step === "narrative") {
-      setStep({ anchoring: 0 });
-      return;
-    }
-    if (typeof step === "object" && step !== null && "anchoring" in step) {
-      if (step.anchoring < content.anchoring.length - 1) {
-        setStep({ anchoring: step.anchoring + 1 });
-      } else {
-        setStep({ se: 0 });
-      }
+      setStep({ se: 0 });
       return;
     }
     if (typeof step === "object" && step !== null && "se" in step) {
@@ -88,15 +64,7 @@ export default function SessionFlow({
       return;
     }
     if (step === "miniLesson") {
-      setStep(content.quiz.length ? { quiz: 0 } : "done");
-      return;
-    }
-    if (typeof step === "object" && step !== null && "quiz" in step) {
-      if (step.quiz < content.quiz.length - 1) {
-        setStep({ quiz: step.quiz + 1 });
-      } else {
-        setStep("done");
-      }
+      setStep("done");
     }
   }, [step, content]);
 
@@ -116,10 +84,8 @@ export default function SessionFlow({
     );
   }
 
-  const stepName = stepKey(step);
-
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
+    <div className="max-w-6xl mx-auto px-4 py-8">
       <header className="flex items-center justify-between mb-6">
         <h1 className="text-lg font-semibold text-[var(--accent)]">
           READS · 에피소드 {episodeId} — {episodeTitle}
@@ -129,9 +95,9 @@ export default function SessionFlow({
         </Link>
       </header>
 
-      {/* Narrative */}
+      {/* Narrative only */}
       {step === "narrative" && (
-        <section className="card">
+        <section className="card max-w-2xl">
           <h2 className="text-sm font-medium text-gray-500 mb-3">본문</h2>
           <div
             className="prose-narrative"
@@ -143,141 +109,80 @@ export default function SessionFlow({
             }}
           />
           <button onClick={goNext} className="btn-primary mt-6">
-            다음: 앵커링 질문
+            다음: 자기설명
           </button>
         </section>
       )}
 
-      {/* Anchoring */}
-      {typeof step === "object" && step !== null && "anchoring" in step && content.anchoring[step.anchoring] && (
-        <section className="card">
-          <h2 className="text-sm font-medium text-gray-500 mb-2">
-            앵커링 질문 {step.anchoring + 1}/{content.anchoring.length}
-          </h2>
-          <p className="font-medium text-gray-800 mb-4">
-            {content.anchoring[step.anchoring].text}
-          </p>
-          <textarea
-            className="w-full min-h-[120px] p-3 border border-[var(--border)] rounded-lg resize-y"
-            placeholder="답을 입력하세요..."
-            value={answers[content.anchoring[step.anchoring].id] ?? ""}
-            onChange={(e) =>
-              setAnswers((prev) => ({
-                ...prev,
-                [content.anchoring[step.anchoring].id]: e.target.value,
-              }))
-            }
-          />
-          <button
-            onClick={() => {
-              const q = content.anchoring[step.anchoring];
-              logResponse(q.id, "anchoring", answers[q.id] ?? "");
-              goNext();
-            }}
-            className="btn-primary mt-4"
-          >
-            {step.anchoring < content.anchoring.length - 1 ? "다음 질문" : "다음: 자기설명"}
-          </button>
-        </section>
-      )}
-
-      {/* Self-explanation */}
+      {/* Self-explanation: left = narrative, right = question + answer */}
       {typeof step === "object" && step !== null && "se" in step && content.selfExplanation[step.se] && (
-        <section className="card">
-          <h2 className="text-sm font-medium text-gray-500 mb-2">
-            자기설명 {step.se + 1}/{content.selfExplanation.length}
-          </h2>
-          <p
-            className="font-medium text-gray-800 mb-4"
-            dangerouslySetInnerHTML={{
-              __html: content.selfExplanation[step.se].text.replace(
-                /\*\*(.*?)\*\*/g,
-                "<strong>$1</strong>"
-              ),
-            }}
-          />
-          <textarea
-            className="w-full min-h-[140px] p-3 border border-[var(--border)] rounded-lg resize-y"
-            placeholder="자신의 말로 설명해 보세요..."
-            value={answers[content.selfExplanation[step.se].id] ?? ""}
-            onChange={(e) =>
-              setAnswers((prev) => ({
-                ...prev,
-                [content.selfExplanation[step.se].id]: e.target.value,
-              }))
-            }
-          />
-          <button
-            onClick={() => {
-              const se = content.selfExplanation[step.se];
-              logResponse(se.id, "self_explanation", answers[se.id] ?? "");
-              goNext();
-            }}
-            className="btn-primary mt-4"
-          >
-            {step.se < content.selfExplanation.length - 1
-              ? "다음"
-              : "다음: 미니 레슨"}
-          </button>
+        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[60vh]">
+          <div className="card overflow-hidden flex flex-col">
+            <h2 className="text-sm font-medium text-gray-500 mb-2 shrink-0">본문</h2>
+            <div
+              className="prose-narrative flex-1 overflow-y-auto pr-2"
+              dangerouslySetInnerHTML={{
+                __html: content.narrative.replace(
+                  /\*\*(.*?)\*\*/g,
+                  "<strong>$1</strong>"
+                ),
+              }}
+            />
+          </div>
+          <div className="card flex flex-col">
+            <h2 className="text-sm font-medium text-gray-500 mb-2 shrink-0">
+              자기설명 {step.se + 1}/{content.selfExplanation.length}
+            </h2>
+            <p
+              className="font-medium text-gray-800 mb-4 shrink-0"
+              dangerouslySetInnerHTML={{
+                __html: content.selfExplanation[step.se].text.replace(
+                  /\*\*(.*?)\*\*/g,
+                  "<strong>$1</strong>"
+                ),
+              }}
+            />
+            <textarea
+              className="w-full min-h-[180px] flex-1 p-3 border border-[var(--border)] rounded-lg resize-y"
+              placeholder="자신의 말로 설명해 보세요..."
+              value={answers[content.selfExplanation[step.se].id] ?? ""}
+              onChange={(e) =>
+                setAnswers((prev) => ({
+                  ...prev,
+                  [content.selfExplanation[step.se].id]: e.target.value,
+                }))
+              }
+            />
+            <button
+              onClick={() => {
+                const se = content.selfExplanation[step.se];
+                logResponse(se.id, "self_explanation", answers[se.id] ?? "");
+                goNext();
+              }}
+              className="btn-primary mt-4 shrink-0"
+            >
+              {step.se < content.selfExplanation.length - 1
+                ? "다음 질문"
+                : "다음: 미니 레슨"}
+            </button>
+          </div>
         </section>
       )}
 
       {/* Mini-lesson */}
       {step === "miniLesson" && (
-        <section className="card">
+        <section className="card max-w-2xl">
           <h2 className="text-sm font-medium text-gray-500 mb-3">미니 레슨</h2>
           <div className="prose-narrative">{content.miniLesson}</div>
           <button onClick={goNext} className="btn-primary mt-6">
-            다음: 확인 퀴즈
-          </button>
-        </section>
-      )}
-
-      {/* Quiz */}
-      {typeof step === "object" && step !== null && "quiz" in step && content.quiz[step.quiz] && (
-        <section className="card">
-          <h2 className="text-sm font-medium text-gray-500 mb-2">
-            확인 퀴즈 {step.quiz + 1}/{content.quiz.length}
-          </h2>
-          <p className="font-medium text-gray-800 mb-4">
-            {content.quiz[step.quiz].question}
-          </p>
-          <ul className="space-y-2">
-            {content.quiz[step.quiz].options.map((opt, i) => (
-              <li key={i}>
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="radio"
-                    name={`quiz-${step.quiz}`}
-                    checked={quizSelected[step.quiz] === i}
-                    onChange={() =>
-                      setQuizSelected((prev) => ({ ...prev, [step.quiz]: i }))
-                    }
-                  />
-                  <span>{opt}</span>
-                </label>
-              </li>
-            ))}
-          </ul>
-          <button
-            onClick={() => {
-              logResponse(
-                content.quiz[step.quiz].id,
-                "mini_lesson_quiz",
-                String(quizSelected[step.quiz] ?? "")
-              );
-              goNext();
-            }}
-            className="btn-primary mt-4"
-          >
-            {step.quiz < content.quiz.length - 1 ? "다음 문제" : "에피소드 완료"}
+            에피소드 완료
           </button>
         </section>
       )}
 
       {/* Done */}
       {step === "done" && (
-        <section className="card text-center">
+        <section className="card text-center max-w-2xl">
           <h2 className="text-xl font-semibold text-[var(--accent)]">
             에피소드 {episodeId} 완료
           </h2>
