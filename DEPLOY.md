@@ -50,3 +50,11 @@ git push -u origin main
 ## 4. 환경 변수
 
 현재 버전은 환경 변수 없이 동작합니다. 추후 백엔드·로그 수집 API를 쓰면 Vercel 프로젝트 **Settings → Environment Variables**에서 설정하면 됩니다.
+
+## 5. 404 NOT_FOUND가 날 때
+
+- **Root Directory**: 푸시한 저장소가 **앱 폴더만** 포함한 경우(예: `reads-project`에 package.json이 루트에 있음) → **비워 두기**.  
+  저장소 루트가 상위 폴더이고 앱이 `reads` 안에 있으면 → **Root Directory**에 `reads` 입력.
+- **빌드 로그**: Vercel 대시보드 → 해당 프로젝트 → **Deployments** → 최근 배포 클릭 → **Building** 로그에서 실패 여부 확인. 빌드 실패 시 404가 날 수 있음.
+- **접속 주소**: 배포 후 나온 URL(예: `https://reads-xxx.vercel.app`)의 **루트(`/`)** 로 접속. 다른 경로는 앱에 없으면 404.
+- **vercel.json**: 프로젝트에 `vercel.json`(framework: nextjs)이 있으면 Next.js로 인식하기 쉬움. 커밋 후 다시 Deploy.
