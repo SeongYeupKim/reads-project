@@ -114,13 +114,13 @@ export default function SessionFlow({
         </section>
       )}
 
-      {/* Self-explanation: left = narrative, right = question + answer */}
+      {/* Self-explanation: left 7 = narrative, right 3 = question + answer (비율 7:3, 스크롤은 각 칸 내부만) */}
       {typeof step === "object" && step !== null && "se" in step && content.selfExplanation[step.se] && (
-        <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[60vh]">
-          <div className="card overflow-hidden flex flex-col">
+        <section className="grid grid-cols-1 lg:grid-cols-10 gap-4 lg:h-[75vh] lg:overflow-hidden">
+          <div className="lg:col-span-7 card overflow-hidden flex flex-col min-h-0">
             <h2 className="text-sm font-medium text-gray-500 mb-2 shrink-0">본문</h2>
             <div
-              className="prose-narrative flex-1 overflow-y-auto pr-2"
+              className="prose-narrative flex-1 overflow-y-auto pr-2 min-h-0"
               dangerouslySetInnerHTML={{
                 __html: content.narrative.replace(
                   /\*\*(.*?)\*\*/g,
@@ -129,12 +129,12 @@ export default function SessionFlow({
               }}
             />
           </div>
-          <div className="card flex flex-col">
+          <div className="lg:col-span-3 card overflow-hidden flex flex-col min-h-0">
             <h2 className="text-sm font-medium text-gray-500 mb-2 shrink-0">
               자기설명 {step.se + 1}/{content.selfExplanation.length}
             </h2>
             <p
-              className="font-medium text-gray-800 mb-4 shrink-0"
+              className="font-medium text-gray-800 mb-3 shrink-0 text-sm leading-snug"
               dangerouslySetInnerHTML={{
                 __html: content.selfExplanation[step.se].text.replace(
                   /\*\*(.*?)\*\*/g,
@@ -143,7 +143,7 @@ export default function SessionFlow({
               }}
             />
             <textarea
-              className="w-full min-h-[180px] flex-1 p-3 border border-[var(--border)] rounded-lg resize-y"
+              className="w-full min-h-[120px] max-h-[40vh] flex-1 p-3 border border-[var(--border)] rounded-lg resize-y text-sm"
               placeholder="자신의 말로 설명해 보세요..."
               value={answers[content.selfExplanation[step.se].id] ?? ""}
               onChange={(e) =>
@@ -159,7 +159,7 @@ export default function SessionFlow({
                 logResponse(se.id, "self_explanation", answers[se.id] ?? "");
                 goNext();
               }}
-              className="btn-primary mt-4 shrink-0"
+              className="btn-primary mt-3 shrink-0"
             >
               {step.se < content.selfExplanation.length - 1
                 ? "다음 질문"
