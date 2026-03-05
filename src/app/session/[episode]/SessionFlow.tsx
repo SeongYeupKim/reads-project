@@ -133,7 +133,15 @@ export default function SessionFlow({
       {step === "narrative" && (
         <section className="card">
           <h2 className="text-sm font-medium text-gray-500 mb-3">본문</h2>
-          <div className="prose-narrative">{content.narrative}</div>
+          <div
+            className="prose-narrative"
+            dangerouslySetInnerHTML={{
+              __html: content.narrative.replace(
+                /\*\*(.*?)\*\*/g,
+                "<strong>$1</strong>"
+              ),
+            }}
+          />
           <button onClick={goNext} className="btn-primary mt-6">
             다음: 앵커링 질문
           </button>
