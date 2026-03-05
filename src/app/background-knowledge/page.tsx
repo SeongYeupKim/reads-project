@@ -44,9 +44,14 @@ export default function BackgroundKnowledgePage() {
           <p className="text-gray-600 mt-2">
             응답이 저장되었습니다. (localStorage: reads_background_knowledge)
           </p>
-          <Link href="/" className="btn-primary mt-6 inline-block">
-            홈으로
-          </Link>
+          <div className="flex flex-col gap-3 mt-6 items-center">
+            <Link href="/reading-comprehension" className="btn-primary">
+              다음: 본 독해 검사
+            </Link>
+            <Link href="/" className="btn-secondary">
+              홈으로
+            </Link>
+          </div>
         </div>
       </main>
     );
